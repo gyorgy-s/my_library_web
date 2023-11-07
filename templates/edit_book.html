@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Edit book
+{% endblock %}
+
+{% block content %}
+  <main>
+    <section class="py-20">
+      <div class="container px-6">
+        <div class="max-sm:w-full sm:w-[300px] mx-auto">
+          <div class="font-sans font-bold text-4xl mb-10">
+            <h1>Edit book</h1>
+          </div>
+          {% if msg %}
+            <div class="text-red-500">
+              <p>{{ msg }}</p>
+            </div>
+          {% endif %}
+          <form id="form1" action="{{ url_for('edit_book') }}" method="POST">
+            {{ form.csrf_token }}
+            <div class="mb-4">
+              <label for="bookName" class="mb-2 inline-block">{{ form.name.label }}</label>
+              <input id="bookName" class="block bg-white rounded-sm text-black px-2 py-0 w-full h-10 focus:ring-offset-2 focus:ring-2 focus:ring-amber-500 outline-none truncate" name="name" type="text" value="{{ book.name }}" placeholder="{{ book.name }}" />
+              {% for error in form.name.errors %}
+                <span class="text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="mb-4">
+              <label for="bookAuthor" class="mb-2 inline-block">{{ form.name.label }}</label>
+              <input id="bookAuthor" class="block bg-white rounded-sm text-black px-2 py-0 w-full h-10 focus:ring-offset-2 focus:ring-2 focus:ring-amber-500 outline-none truncate" name="author" type="text" value="{{ book.author }}" placeholder="{{ book.author }}" />
+              {% for error in form.author.errors %}
+                <span class="text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="mb-4">
+              <label for="bookScore" class="mb-2 inline-block">{{ form.name.label }}</label>
+              <input id="bookScore" class="block bg-white rounded-sm text-black px-2 py-0 w-full h-10 focus:ring-offset-2 focus:ring-2 focus:ring-amber-500 outline-none truncate" name="score" type="text" value="{{ book.score }}" placeholder="{{ book.score }}" />
+              {% for error in form.score.errors %}
+                <span class="text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div>
+              <input type="text" name="id" hidden value="{{ book.id }}" />
+            </div>
+            <div class="mt-10 px-6 flex justify-between">
+              <button hidden type="submit" name="button" value="update"></button>
+              <div>
+                <button type="submit" name="button" value="back" class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/50 transition">Back</button>
+              </div>
+              <div>
+                <button type="submit" name="button" value="update" class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/50 transition">Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

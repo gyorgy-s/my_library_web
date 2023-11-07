@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Add book
+{% endblock %}
+
+{% block content %}
+  <main>
+    <section class="py-20">
+      <div class="container px-6">
+        <div class="max-sm:w-full sm:w-[300px] mx-auto">
+          <div class="font-sans font-bold text-4xl mb-10">
+            <h1 class="nesting">Add new book</h1>
+          </div>
+          {% if msg %}
+            <div class="text-red-500">
+              <p>{{ msg }}</p>
+            </div>
+          {% endif %}
+          <form action="{{ url_for('add') }}" method="POST" novalidate>
+            {{ form.csrf_token }}
+            <div class="mb-4">
+              <label for="bookName" class="mb-2 inline-block">{{ form.name.label }}</label>
+              <input id="bookName" name="name" type="text" value="" placeholder="" />
+              {% for error in form.name.errors %}
+                <span class="text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="mb-4">
+              <label for="bookAuthor" class="mb-2 inline-block">{{ form.author.label }}</label>
+              <input id="bookAuthor" name="author" type="text" value="" placeholder="" />
+              {% for error in form.author.errors %}
+                <span class="text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="mb-4">
+              <label for="bookScore" class="mb-2 inline-block">{{ form.score.label }}</label>
+              <input id="bookScore" name="score" type="text" value="" placeholder="" />
+              {% for error in form.score.errors %}
+                <span class="text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="mt-10 px-6 flex justify-between">
+              <button hidden type="submit" name="button" value="insert"></button>
+              <div>
+                <button type="button" onclick="go-to:{{ url_for('home') }} " name="button" value="back" class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/50 transition">Back</button>
+              </div>
+              <div>
+                <button type="submit" name="button" value="insert" class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/50 transition">Submit</button>
+              </div>
+            </div>
+            <div class="text-center mt-10"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}
+
+{% block script %}
+  <script>
+    const classInput = ['block', 'bg-white', 'rounded-sm', 'text-black', 'px-2', 'py-0', 'w-full', 'h-10', 'focus:ring-offset-2', 'focus:ring-2', 'focus:ring-amber-500', 'outline-none', 'truncate']
+    document.querySelectorAll('input').forEach((item) => {
+      console.log(item)
+      item.classList.add(...classInput)
+    })
+  </script>
+{% endblock %}
