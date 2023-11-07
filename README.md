@@ -4,7 +4,7 @@ Implementation of a library system using Flask and SQLite to store and score boo
 installation:
 Needs python to be able to run.
 
-in console
+in console in the folder the main.py is located:
 ```
 python -m venv .venv
 .venv\Scripts\activate
