@@ -17,7 +17,7 @@
               <p>{{ msg }}</p>
             </div>
           {% endif %}
-          <form id="form1" action="{{ url_for('edit_book') }}" method="POST">
+          <form id="form1" action="{{ url_for('edit_book') }}" method="POST" novalidate>
             {{ form.csrf_token }}
             <div class="mb-4">
               <label for="bookName" class="mb-2 inline-block">{{ form.name.label }}</label>
@@ -27,14 +27,14 @@
               {% endfor %}
             </div>
             <div class="mb-4">
-              <label for="bookAuthor" class="mb-2 inline-block">{{ form.name.label }}</label>
+              <label for="bookAuthor" class="mb-2 inline-block">{{ form.author.label }}</label>
               <input id="bookAuthor" class="block bg-white rounded-sm text-black px-2 py-0 w-full h-10 focus:ring-offset-2 focus:ring-2 focus:ring-amber-500 outline-none truncate" name="author" type="text" value="{{ book.author }}" placeholder="{{ book.author }}" />
               {% for error in form.author.errors %}
                 <span class="text-red-500">{{ error }}</span>
               {% endfor %}
             </div>
             <div class="mb-4">
-              <label for="bookScore" class="mb-2 inline-block">{{ form.name.label }}</label>
+              <label for="bookScore" class="mb-2 inline-block">{{ form.score.label }}</label>
               <input id="bookScore" class="block bg-white rounded-sm text-black px-2 py-0 w-full h-10 focus:ring-offset-2 focus:ring-2 focus:ring-amber-500 outline-none truncate" name="score" type="text" value="{{ book.score }}" placeholder="{{ book.score }}" />
               {% for error in form.score.errors %}
                 <span class="text-red-500">{{ error }}</span>
