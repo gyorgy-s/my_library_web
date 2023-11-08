@@ -25,9 +25,7 @@ class Books(db.Model):
     """Class to represent the table in the SQLite DB. PRIMARY KEY = id, UNIQUE = name"""
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[VARCHAR(250)] = mapped_column(
-        VARCHAR(250), unique=True, nullable=False
-    )
+    name: Mapped[VARCHAR(250)] = mapped_column(VARCHAR(250), unique=True, nullable=False)
     author: Mapped[VARCHAR(250)] = mapped_column(VARCHAR(250), nullable=False)
     score: Mapped[float] = mapped_column(Float, nullable=False)
 
@@ -59,9 +57,7 @@ def create_book(name: str, author: str, score: float):
 def update_book(book, name: str, author: str, score: float):
     """Update the whole record, selected by ID."""
     with app.app_context():
-        book_to_update = db.session.execute(
-            db.select(Books).where(Books.id == book.id)
-        ).scalar()
+        book_to_update = db.session.execute(db.select(Books).where(Books.id == book.id)).scalar()
         book_to_update.name = name
         book_to_update.author = author
         book_to_update.score = score
@@ -118,10 +114,10 @@ def add():
 def edit_book():
     """Edit the selected record in the DB. Checks for valid fields."""
     form = BookForm()
+    book_to_edit = get_book(id=request.values["id"])
     if request.method == "POST":
         if request.form["button"] == "update":
             if form.validate_on_submit():
-                book_to_edit = get_book(id=request.form["id"])
                 try:
                     update_book(
                         book_to_edit,
@@ -130,14 +126,12 @@ def edit_book():
                         score=form.score.data,
                     )
                 except exc.IntegrityError as err:
-                    return render_template(
-                        "edit_book.html", book=book_to_edit, form=form, msg=err.orig
-                    )
+                    return render_template("edit_book.html", book=book_to_edit, form=form, msg=err.orig)
                 return redirect(url_for("home"))
+            return render_template("edit_book.html", book=book_to_edit, form=form)
         elif request.form["button"] == "back":
             return redirect(url_for("home"))
     else:
-        book_to_edit = get_book(id=request.values["id"])
         return render_template("edit_book.html", book=book_to_edit, form=form)
 
 
