@@ -24,7 +24,7 @@ db.init_app(app)
 class Books(db.Model):
     """Class to represent the table in the SQLite DB. PRIMARY KEY = id, UNIQUE = name"""
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[VARCHAR(250)] = mapped_column(VARCHAR(250), unique=True, nullable=False)
     author: Mapped[VARCHAR(250)] = mapped_column(VARCHAR(250), nullable=False)
     score: Mapped[float] = mapped_column(Float, nullable=False)
@@ -67,7 +67,7 @@ def update_book(book, name: str, author: str, score: float):
 def get_all_books():
     """Using SQLALchemmy returns the whole table as a list of Scalars()."""
     with app.app_context():
-        result = db.session.execute(db.select(Books).order_by(Books.id)).scalars()
+        result = db.session.execute(db.select(Books).order_by(Books.id), execution_options={"prebuffer_rows": True}).scalars()
     return result
 
 
@@ -78,11 +78,23 @@ def get_book(id: int):
     return result
 
 
-@app.route("/")
+def delete_book(id: int):
+    """Using SQLAlchemy deletes teh record with thte given ID."""
+    book_to_delete = get_book(id)
+    db.session.delete(book_to_delete)
+    db.session.commit()
+
+
+@app.route("/", methods=["GET", "POST"])
 def home():
     """Home screen, displaying the conents of the dm table if any."""
-    with app.app_context():
-        result = db.session.execute(db.select(Books).order_by(Books.id)).scalars()
+    result = get_all_books()
+    if request.method == "POST":
+        if request.form["button"][:6] == "delete":
+            delete_book(int(request.form["button"][6:]))
+            result = get_all_books()
+        return render_template("index.html", books=result)
+    if request.method == "GET":
         return render_template("index.html", books=result)
 
 
