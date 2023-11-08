@@ -1,50 +1,72 @@
-{% extends 'base.html' %}
-
-{% block title %}
-  My Library
-{% endblock %}
-
-{% block content %}
-  <main>
-    <section class="py-20">
-      <div class="container px-6">
-        <div class="max-lg:w-full lg:w-[950px] mx-auto">
-          <div class="font-sans font-bold text-4xl">
-            <h1>My Library</h1>
-          </div>
-          <div class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/50 transition mt-20 mb-10">
-            <a href="{{ url_for('add') }}">Add New Book</a>
-          </div>
-          {% if books %}
-            <div class="shadow-xl shadow-slate-700/50 overflow-hidden rounded-xl">
-              <table class="min-w-full table-auto">
-                <thead class="bg-slate-900 text-white">
-                  <tr>
-                    <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Name</th>
-                    <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Author</th>
-                    <th class="w-[50px] text-center py-3 px-4 uppercase font-semibold text-sm">Score</th>
-                    <th class="w-[50px] text-center py-3 px-4 uppercase font-semibold text-sm"></th>
-                  </tr>
-                </thead>
-                <tbody class="text-white">
-                  {% for row in books %}
-                    <tr class="even:bg-slate-800 odd:bg-slate-700 hover:bg-amber-500/70 transition">
-                      <td class="text-left py-2 px-3">{{ row['name'] }}</td>
-                      <td class="text-left py-2 px-3">{{ row['author'] }}</td>
-                      <td class="text-center py-2 px-3">{{ row['score'] }}</td>
-                      <td class="text-center py-2 px-3">
-                        <a class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/10 transition" href="{{ url_for('edit_book', id = row['id']) }}" role="button">Edit</a>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-              {% else %}
-              <p>Library is empty.</p>
-            </div>
-          {% endif %}
+{% extends 'base.html' %} {% block title %} My Library {% endblock %} {% block
+content %}
+<main>
+  <section class="py-20">
+    <div class="container px-6">
+      <div class="max-lg:w-full lg:w-[950px] mx-auto">
+        <div class="font-sans font-bold text-4xl">
+          <h1>My Library</h1>
         </div>
+        <div
+          class="inline-block text-white font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/50 transition mt-20 mb-10">
+          <a href="{{ url_for('add') }}">Add New Book</a>
+        </div>
+        {% if books %}
+        <div class="shadow-xl shadow-slate-700/50 overflow-hidden rounded-xl">
+          <table class="min-w-full table-auto">
+            <thead class="bg-slate-900 text-white">
+              <tr>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+                  Name
+                </th>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+                  Author
+                </th>
+                <th class="w-[50px] text-center py-3 px-4 uppercase font-semibold text-sm">
+                  Score
+                </th>
+                <th class="w-[50px] text-center py-3 px-4 uppercase font-semibold text-sm"></th>
+                <th class="w-[50px] text-center py-3 px-4 uppercase font-semibold text-sm"></th>
+              </tr>
+            </thead>
+            <tbody class="text-white">
+              {% for row in books %}
+              <tr class="even:bg-slate-800 odd:bg-slate-700 hover:bg-amber-500/70 transition">
+                <td class="text-left py-2 px-3">
+                  {{ row['name'] }}
+                </td>
+                <td class="text-left py-2 px-3">
+                  {{ row['author'] }}
+                </td>
+                <td class="text-center py-2 px-3">
+                  {{ row['score'] }}
+                </td>
+                <td class="text-center py-2 px-3">
+                  <a class="inline-block text-white hover:text-black font-bold py-1 px-3 bg-amber-500 rounded-md cursor-pointer shadow-md shadow-slate-700 hover:bg-amber-500/0 transition"
+                    href="{{ url_for('edit_book', id = row['id']) }}" role="button">Edit</a>
+                </td>
+                <td id="book_id{{ row['id'] }}" class="hidden" value="{{ row['id'] }}"></td>
+                <td class="text-center py-2 px-3 w-">
+                  <!-- <a class="inline-block text-[0.7rem] text-white hover:text-black font-bold py-0 px-1 bg-red-500 rounded-md cursor-pointer shadow-md shadow-slate-700 transition" href="" role="button">Delete</a> -->
+                  <form action="" method="POST">
+                    <button type="submit" name="button" value="delete{{ row['id'] }}"
+                      class="inline-block text-[0.7rem] text-white hover:text-black font-bold py-0 px-1 bg-red-500 rounded-md cursor-pointer shadow-md shadow-slate-700 transition">
+                      Delete
+                    </button>
+                    <p id="test"></p>
+                  </form>
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p>Library is empty.</p>
+        </div>
+        {% endif %}
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
 {% endblock %}
